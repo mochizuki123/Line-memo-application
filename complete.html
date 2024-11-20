@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
-aa
+b
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,15 +31,16 @@ aa
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
         import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
             from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
-        // Your web app's Firebase configuration
+        
+            // Your web app's Firebase configuration  ★提出時にAPIキーは削除★
         const firebaseConfig = {
-            apiKey: "",
-            authDomain: "",
-            projectId: "",
-            storageBucket: "",
-            messagingSenderId: "",
-            appId: ""
-        };
+                apiKey: "AIzaSyBrbh3eUWvE7ILBF5FDHnHVCwZG2Y8Z8Do",
+                authDomain: "gsdev0603-9130c.firebaseapp.com",
+                projectId: "gsdev0603-9130c",
+                storageBucket: "gsdev0603-9130c.firebasestorage.app",
+                messagingSenderId: "1001183675744",
+                appId: "1:1001183675744:web:76225f3262138d14790a05"
+            };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app); //RealtimeDBに接続
         const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う
