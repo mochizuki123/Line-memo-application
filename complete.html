@@ -1,29 +1,62 @@
 <!DOCTYPE html>
 <html lang="ja">
-b
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase_version9_RealtimeDB(G'sACADEMY初学者用サンプル)</title>
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css1/reset.css">
+    <link rel="stylesheet" href="./css1/style.css">
 </head>
 
 <body>
-    <h1>チャットアプリ</h1>
-    <!-- コンテンツ表示画面 -->
     <div>
-        <div>
-            <input type="text" id="uname" placeholder="名前を入力してください">
-        </div>
-        <div>
-            <textarea id="text" placeholder="文章を入力してください"></textarea>
-        </div>
-        <button id="send">送信</button>
-        <div id="output"></div>
+        <img class="bucket-img" src="./img/backet list image.png"  alt="">
     </div>
-
+    <h1>Bucket list</h1>
+    <h1 class="text1"> 📝叶えたい夢</h1>
+    <main>
+        <div id="output"></div>
+    
+        <div class="input-area">
+            <input id="date" type="text" placeholder="登録日を入力">
+            <textarea id="task" placeholder="実現したいことを入力"></textarea>
+            <textarea id="memo" placeholder="メモを入力"></textarea>
+        </div>
+    
+        <dl class="typepriority-area">
+            <dd><select id="type">
+                    <option value="palceholder">種別</option>
+                    <option>仕事</option>
+                    <option>家事</option>
+                    <option>遊び</option>
+                    <option>その他</option>
+                </select>
+            </dd>
+    
+            <dd><select id="priority">
+                    <option value="palceholder">優先度</option>
+                    <option></option>
+                    <option>高</option>
+                    <option>中</option>
+                    <option>低</option>
+                </select>
+            </dd>
+        </dl>
+    
+        <div class="button-area">
+            <button id="save">登録</button>
+            <button id="clear">削除</button>
+        </div>
+    </main>
+    
+    
+    <footer>
+        Gs
+    </footer>
+   
+    <!-- コンテンツ表示画面 -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="module">
@@ -45,24 +78,27 @@ b
         const db = getDatabase(app); //RealtimeDBに接続
         const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う
             
-        //11/21追加
-        const unameQuery = query(dbRef, orderByChild('uname'), equalTo('mochi'));
+        //11/21 キー(type)クエリ
+        /*const typeQuery = query(dbRef, orderByChild('type'), equalTo('mochi'));
 
-            get(unameQuery)
+            get(typeQuery)
                 .then((snapshot) => {
                     if (snapshot.exists()) {
                         console.log(snapshot.val()); // 検索結果を取得
                     } else {
                         console.log('No matching data found');
                     }
-                 });
+                 }); */
 
+        //11/21 追加 データ削除
+        //$("#delete").on("click", function ()
+        //dbRef.child("clear").remove(key);
 
         //データ登録(Click)
-        $("#send").on("click", function () {
+        $("#save").on("click", function () {
             const msg = {
-                uname: $("#uname").val(),
-                text: $("#text").val()
+                type: $("#type").val(),
+                priority: $("#priority").val()
             }
             const newPostRef = push(dbRef); //ユニークKEYを生成
             set(newPostRef, msg);           //"chat"にユニークKEYをつけてオブジェクトデータを登録
@@ -73,7 +109,7 @@ b
             console.log(e);        //e変数の中身を確認！！
             if (e.keyCode == 13) {   //EnterKey=13
                 const msg = {
-                    uname: $("#uname").val(),
+                    type: $("#type").val(),
                     text: $("#text").val()
                 }
                 const newPostRef = push(dbRef); //ユニークKEYを生成
@@ -81,16 +117,18 @@ b
             }
         });
 
+
         //最初にデータ取得＆onSnapshotでリアルタイムにデータを取得
         onChildAdded(dbRef, function (data) {
             const msg = data.val();    //オブジェクトデータを取得し、変数msgに代入
             const key = data.key;      //データのユニークキー（削除や更新に使用可能）
             
+           console.log(msg,"データ取得を確認");            
             //表示用テキスト・HTMLを作成
-            let h = '<p>';
-            h += msg.uname;
+            let h = '<p class="output-css">';
+            h += msg.type;
             h += '<br>';
-            h += msg.text;
+            h += msg.priority;
             h += '</p>';
             $("#output").append(h); //#outputの最後に追加
 
@@ -99,7 +137,7 @@ b
 
         // データ更新
         //db.collection(msg).doc(OCDoMX20wuQXCeYC - XK).update({
-          //  uname: "bb"
+          //  type: "bb"
         //})
     
     </script>
