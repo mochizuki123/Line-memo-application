@@ -11,44 +11,49 @@
 </head>
 
 <body>
-    <div>
-        <img class="bucket-img" src="./img/backet list image.png"  alt="">
+    <div class="bucket-img">
+        <img src="./img/backet list image.png"  width="700" height="400" alt="">
     </div>
     <h1>Bucket list</h1>
     <h1 class="text1"> 📝叶えたい夢</h1>
     <main>
-        <div id="output"></div>
-    
-        <div class="input-area">
-            <input id="date" type="text" placeholder="登録日を入力">
-            <textarea id="task" placeholder="実現したいことを入力"></textarea>
-            <textarea id="memo" placeholder="メモを入力"></textarea>
-        </div>
-    
-        <dl class="typepriority-area">
-            <dd><select id="type">
+        <div class="type-area"> 
+                <select class="type-option" id="type">
                     <option value="palceholder">種別</option>
                     <option>仕事</option>
                     <option>家事</option>
                     <option>遊び</option>
                     <option>その他</option>
                 </select>
-            </dd>
-    
-            <dd><select id="priority">
+        </div>
+        
+        <!-- 登録日はカレンダーへ変更 -->
+        <div class="input-area">
+            <input id="date" type="text" placeholder="登録日を入力">
+            <textarea id="task" placeholder="実現したいことを入力"></textarea>
+            <textarea id="memo" placeholder="メモを入力"></textarea>
+        </div>
+
+        
+            <!-- <dd><select id="priority">
                     <option value="palceholder">優先度</option>
                     <option></option>
                     <option>高</option>
                     <option>中</option>
                     <option>低</option>
-                </select>
-            </dd>
-        </dl>
-    
+                </select> -->
+        
+        
         <div class="button-area">
             <button id="save">登録</button>
             <button id="clear">削除</button>
         </div>
+
+        <div id="output"></div>
+        
+          <!-- ランダムに応援メッセージ/ 右揃え/   --> 
+    
+        
     </main>
     
     
@@ -89,20 +94,40 @@
                         console.log('No matching data found');
                     }
                  }); */
+            
+        /*$(document).on("click", ".delete", function () {
+            const key = $(this).data("key"); // 削除対象のユニークKEYを取得
+            const itemRef = ref(db, `chat/${key}`); // 削除対象のデータの参照を取得
+            remove(itemRef) // データを削除
+            .then(() => {
+                alert("データを削除しました");
+            })
+        })*/
 
-        //11/21 追加 データ削除
-        //$("#delete").on("click", function ()
-        //dbRef.child("clear").remove(key);
+        //データ削除
+        /*
 
+        const database = firebase.database();
+        const room = "chat_room";
+        database.ref(room).child("※1キー").remove();
+        */    
+        
         //データ登録(Click)
         $("#save").on("click", function () {
             const msg = {
                 type: $("#type").val(),
-                priority: $("#priority").val()
+                date: $("#date").val(),
+                task: $("#task").val(),
+                memo: $("#memo").val(),
+               
+    
             }
             const newPostRef = push(dbRef); //ユニークKEYを生成
             set(newPostRef, msg);           //"chat"にユニークKEYをつけてオブジェクトデータを登録
+        console.log(dbRef);
+            
         });
+
 
         //データ登録(Enter)
         $("#text").on("keydown", function (e) {
@@ -126,15 +151,28 @@
            console.log(msg,"データ取得を確認");            
             //表示用テキスト・HTMLを作成
             let h = '<p class="output-css">';
-            h += msg.type;
+            h += "〇種別:" + msg.type;
             h += '<br>';
-            h += msg.priority;
-            h += '</p>';
-            $("#output").append(h); //#outputの最後に追加
-
-        });
+            h += "〇日付:" + msg.date;
+            h += '<br>';
+            h += "〇夢:" + msg.task;
+            h += '<br>';
+            h += "〇メモ:" + msg.memo;
+            h += '<br>';
             
+            $("#output").append(h); //#outputの最ype;
 
+        console.log(key, "keyを確認");
+         
+        //11/21 データ削除
+            $("#clear").on("click", function () {
+                dbRef.child(key).remove()
+            })  
+        });
+        
+        console.log(dbRef);
+        
+//private handleDelete = (key: string) => remove(ref(db, 'chat/' + key));        
         // データ更新
         //db.collection(msg).doc(OCDoMX20wuQXCeYC - XK).update({
           //  type: "bb"
